@@ -1,0 +1,12 @@
+<!--pages/index/index.wxml-->
+<view class="indexContainer">
+  <image class="avatarUrl" src="/static/images/nvsheng.jpg"></image>
+  <text class="userName">{{msg}}</text>
+  <!-- <view class="goStudy" bindtap="handleParent">
+    <text bindtap="handleChild">hello world</text>
+  </view> -->
+
+  <view class="goStudy" catchtap="toLogs">
+    <text>hello world</text>
+  </view>
+</view>
