@@ -5,7 +5,8 @@ Page({
    * 页面的初始数据
    */
   data: {
-    msg: "初始化的数据"
+    msg: "初始化的数据",
+    userInfo:{}
   },
   handleParent(){
     console.log('parent')
@@ -31,6 +32,19 @@ Page({
     //   })
     //   console.log(this.data.msg)
     // },2000)
+
+    // 授权以后获取用户信息
+    wx.getUserInfo({
+      success:(res)=>{
+        console.log(res)
+        this.setData({
+          userInfo: res.userInfo
+        })
+      },
+      fail:(err)=>{
+        console.log(err)
+      }
+    })  
   },
 
   /**
@@ -45,6 +59,15 @@ Page({
    */
   onShow: function () {
     console.log('onShow()')
+  },
+
+  handleUserInfo(res){
+    console.log(res)
+    if(res.detail.userInfo) {
+      this.setData({
+        userInfo: res.detail.userInfo
+      })
+    }
   },
 
   /**
