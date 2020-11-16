@@ -6,7 +6,7 @@ Page({
    * 页面的初始数据
    */
   data: {
-    username: '',
+    phone: '',
     password: ''
   },
 
@@ -29,11 +29,11 @@ Page({
 
   async login() {
     let {
-      username,
+      phone,
       password
     } = this.data
 
-    if (!username) {
+    if (!phone) {
       wx.showToast({
         title: '手机号不能为空',
         icon: 'none'
@@ -43,7 +43,7 @@ Page({
 
     let phoneReg = /^1(3|4|5|6|7|8|9)\d{9}$/
 
-    if (!phoneReg.test(username)) {
+    if (!phoneReg.test(phone)) {
       wx.showToast({
         title: '手机号格式不正确',
         icon: 'none'
@@ -61,12 +61,20 @@ Page({
 
     // 后端验证
     let result = await request('/login/cellphone', {
-      username,
+      phone,
       password
     })
     if (result.code === 200) {
       wx.showToast({
         title: '登录成功',
+      })
+      // 个人数据存储到本地
+      wx.setStorageSync('userInfo', JSON.stringify(result.profile))
+      
+
+      // 跳转至个人中心页
+      wx.switchTab({
+        url: '/pages/personal/personal',
       })
     } else if (result.code === 400) {
       wx.showToast({

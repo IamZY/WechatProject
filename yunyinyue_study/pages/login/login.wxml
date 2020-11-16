@@ -7,7 +7,7 @@
     <view class="input-content">
       <view class="input-item">
         <text class="tit">手机号码</text>
-        <input type="text" placeholder="请输入手机号码" data-type="username" bindinput="handleInput" />
+        <input type="text" placeholder="请输入手机号码" data-type="phone" bindinput="handleInput" />
       </view>
       <view class="input-item">
         <text class="tit">密码</text>
