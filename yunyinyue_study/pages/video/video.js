@@ -10,8 +10,10 @@ Page({
     navId: 0,
     videoList: [],
     videoId: '', // 视频id标识
-    videoUpdateTime: [],
+    videoUpdateTime: [], // 记录video的时长
+    isTriggered: false
   },
+
 
   /**
    * 生命周期函数--监听页面加载
@@ -52,7 +54,9 @@ Page({
     })
 
     this.setData({
-      videoList
+      videoList,
+      // 关闭下拉刷新
+      isTriggered: false
     })
 
     // console.log(this.data.videoList)
@@ -86,7 +90,7 @@ Page({
     // console.log(event)
     // 再点击视频的时候需要查找上个播放的视频
     // 关闭掉上次播放的视频
-    
+
     // 点击当前视频的id
     let vid = event.currentTarget.id;
     // 如何找到上一个视频的对象
@@ -102,15 +106,80 @@ Page({
     })
 
     this.videoContext = wx.createVideoContext(vid)
+
+    // 判断当前视频是否播放过
+    let {
+      videoUpdateTime
+    } = this.data
+    let videoItem = videoUpdateTime.find(item => item.vid === vid)
+
+    if (videoItem) {
+      this.videoContext.seek(videoItem.currentTime)
+    }
+
     this.videoContext.play();
-    
+
     // this.videoContext.stop()
 
   },
 
   handleTimeUpdate(event) {
     // console.log(event)
+    let videoTimeObj = {
+      vid: event.currentTarget.id,
+      currentTime: event.detail.currentTime
+    };
+
+    let {
+      videoUpdateTime
+    } = this.data
+
+    // 判断播放时长的数组中是否有当前视频的播放记录
+    let videoItem = videoUpdateTime.find(item => item.vid === videoTimeObj.vid)
+
+    if (videoItem) {
+      // 获取最新的时长
+      videoItem.currentTime = videoTimeObj.currentTime;
+    } else {
+      // 之前没有
+      videoUpdateTime.push(videoTimeObj)
+    }
+
+    // 统一更新videoUpdate状态
+    this.setData({
+      videoUpdateTime
+    })
+
   },
+
+  /** 移除的时候删除  */
+  handleEnded(event) {
+    // 移除记录播放时长 当前视频对象
+    let {
+      videoUpdateTime
+    } = this.data
+    let vid = event.currentTarget.id;
+    let id = videoUpdateTime.findIndex(item => item.vid === vid)
+    videoUpdateTime.splice(id, 1)
+    this.setData({
+      videoUpdateTime
+    })
+  },
+  handleRefresher() {
+    console.log('refresher')
+    // 再次发送请求获取最新的视频列表数据
+    this.getVideoList(this.data.navId)
+    
+  },
+
+  // 自定义上拉触底回调
+  handleToLower(){
+    // console.log('scroll 上拉触底')
+    // 数据分页
+
+  },
+
+
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
@@ -143,7 +212,7 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function() {
-
+    console.log('下拉')
   },
 
   /**
