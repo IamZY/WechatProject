@@ -62,7 +62,8 @@ Page({
     // 后端验证
     let result = await request('/login/cellphone', {
       phone,
-      password
+      password,
+      isLogin:true
     })
     if (result.code === 200) {
       wx.showToast({
@@ -71,6 +72,8 @@ Page({
       // 个人数据存储到本地
       wx.setStorageSync('userInfo', JSON.stringify(result.profile))
       
+      // cookie
+
 
       // 跳转至个人中心页
       wx.switchTab({

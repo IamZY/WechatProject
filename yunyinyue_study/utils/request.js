@@ -17,8 +17,32 @@ export default (url, data = {}, method = 'GET') => {
             url: config.host + url,
             data,
             method,
+            header:{
+              cookie: wx.getStorageSync('cookies')
+            },
             success(res) {
                 console.log('请求成功', res)
+                // cookie
+                // 将cookie保存在本地
+                // 判断请求来源
+                if(data.isLogin) {
+                  // 
+                  console.log(res)
+                  console.log(res.cookies)
+
+                  console.log(typeof(res.cookies))
+
+                  console.log(res.cookies.find(item => item.indexOf('MUSIC_U') !== -1))
+
+                  // console.log(value)
+
+                  wx.setStorage({
+                    key: 'cookies',
+                    // data: res.cookies,
+                    data:res.cookies.find(item => item.indexOf('MUSIC_U') !== -1)
+                  })
+                }
+                
                 resolve(res.data);
             },
             fail(res) {
