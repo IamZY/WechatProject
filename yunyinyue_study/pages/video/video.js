@@ -169,11 +169,11 @@ Page({
     console.log('refresher')
     // 再次发送请求获取最新的视频列表数据
     this.getVideoList(this.data.navId)
-    
+
   },
 
   // 自定义上拉触底回调
-  handleToLower(){
+  handleToLower() {
     // console.log('scroll 上拉触底')
     // 数据分页
 
@@ -219,13 +219,27 @@ Page({
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function() {
-
+    console.log('上拉')
   },
 
   /**
    * 用户点击右上角分享
    */
-  onShareAppMessage: function() {
+  onShareAppMessage: function(from) {
+    console.log(from)
+    if (from === 'button') {
+      return {
+        title: 'button转发内容',
+        page: '/pages/video/video',
+        imageUrl: '/static/images/nvsheng.jpg'
+      }
+    } else {
+      return {
+        title: 'menu转发内容',
+        page: '/pages/video/video',
+        imageUrl: '/static/images/nvsheng.jpg'
+      }
+    }
 
   }
 })
