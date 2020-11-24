@@ -9,13 +9,14 @@
 
   <!--  五个图标导航区域 -->
   <view class="navContainer">
-    <view class="navItem">
+    <view class="navItem" bindtap="toRecommendSong">
       <text class="iconfont icon-meirituijian"></text>
       <text>每日推荐</text>
     </view>
-    <view class="navItem">
+    <view class="navItem" bindtap="toOther">
       <text class="iconfont icon-gedan1"></text>
-      <text>歌单</text>
+<!--      <text>歌单</text>-->
+    <text>other</text>
     </view>
     <view class="navItem">
       <text class="iconfont icon-icon-ranking"></text>
